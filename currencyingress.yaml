@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: currency-ingress
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/plugins: rl-by-ip
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /conversionFactor
+            pathType: Prefix
+            backend:
+              service:
+                name: conversionfactor
+                port:
+                  number: 80
+          - path: /ConvertedAmount/currency/AUD/amount/124315
+            pathType: Prefix
+            backend:
+              service:
+                name: convertcurrency
+                port:
+                  number: 80

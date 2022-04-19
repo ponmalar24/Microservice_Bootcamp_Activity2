@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: convertcurrency
+spec:
+  selector:
+    matchLabels:
+      app: convertcurrency
+  template:
+    metadata:
+      labels:
+        app: convertcurrency
+    spec:
+      containers:
+      - name: convertcurrency
+        image: ponmalar/convertcurrency
+        ports:
+        - containerPort: 80
+        env:
+        - name: CONVERSIONURL
+          valueFrom:
+            configMapKeyRef:
+              name: currency-config
+              key: CONVERSIONURL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: convertcurrency
+spec:
+  selector:
+    app: convertcurrency
+  ports:
+  - port: 80
+    targetPort: 8081
